@@ -1,0 +1,23 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./chatbot  # This points to the directory where Dockerfile is located
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - chatbot-network
+
+  frontend:
+    build: ./frontend/chatbot
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - chatbot-network
+
+networks:
+  chatbot-network:
+    driver: bridge
