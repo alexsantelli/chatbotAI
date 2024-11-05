@@ -21,7 +21,7 @@ const Chatbot = () => {
 
       // Make a POST request with the message in the request body
       const response = await axios.post(
-        "http://localhost:5000/ask",
+        "http://localhost:8080/ask",
         { message: input },
         { headers: { "Content-Type": "application/json" } }
       );

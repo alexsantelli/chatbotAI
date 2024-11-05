@@ -37,11 +37,7 @@ def ask_ai():
             max_tokens=150
         )
 
-        print(f"OpenAI API Response: {response}")  # Log API response
-
         answer = response.choices[0].message.content.strip()
-        print(f"Generated answer: {answer}")  # Log generated answer
-
         return jsonify({'answer': answer})
 
     except Exception as e:
