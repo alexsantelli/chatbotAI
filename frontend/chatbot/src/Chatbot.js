@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { FaPaperPlane } from "react-icons/fa";
-import "./styles/ChatBot.css"; // Assuming you will create a separate CSS file for styling
+import "./styles/ChatBot.css"; // Ensure this file is created and styled as shown below
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
@@ -10,22 +10,22 @@ const Chatbot = () => {
 
   const handleSend = async () => {
     if (input.trim() === "") return;
-  
+
     const newMessage = { text: input, sender: "user" };
     setMessages([...messages, newMessage]);
     setInput("");
     setLoading(true);
-  
+
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // 1-second delay
-  
+
       // Make a POST request with the message in the request body
       const response = await axios.post(
         "http://localhost:5000/ask",
         { message: input },
         { headers: { "Content-Type": "application/json" } }
       );
-  
+
       const aiMessage = { text: response.data.answer, sender: "ai" };
       setMessages((prevMessages) => [...prevMessages, aiMessage]);
     } catch (error) {
@@ -34,7 +34,6 @@ const Chatbot = () => {
       setLoading(false);
     }
   };
-  
 
   const handleInputChange = (e) => setInput(e.target.value);
 
