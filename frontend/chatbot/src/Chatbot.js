@@ -10,25 +10,31 @@ const Chatbot = () => {
 
   const handleSend = async () => {
     if (input.trim() === "") return;
-
+  
     const newMessage = { text: input, sender: "user" };
     setMessages([...messages, newMessage]);
     setInput("");
     setLoading(true);
-
+  
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // 1-second delay
-      const response = await axios.get(
-        "http://localhost:5000/chat?message=" + encodeURIComponent(input)
+  
+      // Make a POST request with the message in the request body
+      const response = await axios.post(
+        "http://localhost:5000/ask",
+        { message: input },
+        { headers: { "Content-Type": "application/json" } }
       );
-      const aiMessage = { text: response.data, sender: "ai" };
-      setMessages([...messages, aiMessage]);
+  
+      const aiMessage = { text: response.data.answer, sender: "ai" };
+      setMessages((prevMessages) => [...prevMessages, aiMessage]);
     } catch (error) {
       console.error("Error fetching AI response", error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleInputChange = (e) => setInput(e.target.value);
 
