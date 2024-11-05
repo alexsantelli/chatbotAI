@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 import os
 from flask_cors import CORS
@@ -14,7 +14,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Configure OpenAI API
-openai.api_key = os.getenv('OPENAI_API_KEY')
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 @app.route('/ask', methods=['POST'])
 def ask_ai():
@@ -25,14 +25,27 @@ def ask_ai():
         return jsonify({'error': 'No message provided'}), 400
 
     try:
-        response = openai.Completion.create(
-            engine='text-davinci-003',
-            prompt=user_message,
+        print(f"Received user message: {user_message}")  # Log user message
+
+        # Use the custom assistant
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo-16k",  # Ensure the model matches the assistant's configuration
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": user_message}
+            ],
             max_tokens=150
         )
-        answer = response.choices[0].text.strip()
+
+        print(f"OpenAI API Response: {response}")  # Log API response
+
+        answer = response.choices[0].message.content.strip()
+        print(f"Generated answer: {answer}")  # Log generated answer
+
         return jsonify({'answer': answer})
+
     except Exception as e:
+        print(f"Error during OpenAI API call: {e}")  # Log error
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
