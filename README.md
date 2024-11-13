@@ -39,8 +39,8 @@ This project is a chatbot application that uses OpenAI's GPT-3.5-turbo model to 
 1. **Clone the Repository**:
 
    ```bash
-   git clone <repository_url>
-   cd project-folder
+   git clone https://github.com/alexsantelli/chatbotAI.gitgit
+   cd chatbotAI
 
    ```
 
@@ -53,7 +53,6 @@ This project is a chatbot application that uses OpenAI's GPT-3.5-turbo model to 
 
 ### Explanation:
 
-- Replace `<repository_url>` with the actual URL of your repository.
 - The `.env` file should contain your OpenAI API key.
 - Run `docker-compose up --build` to start both the frontend and backend services.
 
